@@ -1,5 +1,5 @@
 # Deno GKM
-An event based, Global Keyboard and Mouse listener (GKM) driver for Deno.
+Async based, Global Keyboard and Mouse listener (GKM) driver for Deno.
 
 Tested on Windows, but should work on Linux and Mac OS X as well (untested).
 
