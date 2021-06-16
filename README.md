@@ -25,13 +25,6 @@ import gkm from 'https://raw.githubusercontent.com/denyncrawford/deno-gkm/master
 **Then use it as async iterator**:
 
 ```javascript
-var gkm = require('gkm');
-
-// Listen to all key events (pressed, released, typed)
-gkm.events.on('key.*', function(data) {
-    console.log(this.event + ' ' + data);
-});
-
 import gkm from './mod.js'
 
 for await (const line of gkm()) {
