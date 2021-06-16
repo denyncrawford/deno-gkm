@@ -21,10 +21,8 @@ export const gkm = async function* () {
 	});
 
 	for await (const line of readLines(reader.stdout)) {
-	const data = line.toString().split(/\r\n|\r|\n/).filter((item) =>  item);
-	const parts = data[0].split(':');
-	const evt = { event: parts[0], data:parts[1]}
-		yield evt
+		const parts = line.split(':');
+		yield { event: parts[0], data:parts[1]}
 	}
 }
 
