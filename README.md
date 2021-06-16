@@ -33,7 +33,7 @@ for await (const line of gkm()) {
 }
 ```
 
-The event string format is: `[device].[event_type]` so you can listen only the events you want using wildcards:
+**The event string format is**: `[device].[event_type]` so you can listen only the events you want using ***wildcards***:
 
 **This will yield only mouse events**:
 
