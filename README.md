@@ -1,7 +1,9 @@
 # Deno GKM
-Async based, Global Keyboard and Mouse listener (GKM) driver for Deno.
+Async based, Global Keyboard and Mouse listener (GKM) for Deno.
 
-Tested on Windows, but should work on Linux and Mac OS X as well (untested).
+> We're planing to implement GKM as an event trigger in the future, so it can be used for automation.
+
+Built on Windows, there's no Linux binaries available at the moment.
 
 ## Why?
 
@@ -9,10 +11,9 @@ Deno do not have any global keyboard and mouse listener available.
 
 ## Requirements
 
-Deno GKM depends on [JNativeHook](https://github.com/kwhat/jnativehook) and [gkm-java](https://github.com/tomzx/gkm-java), which runs on Java. Thus **you will need to have a JVM available** and more importantly, java availble on your PATH, but this could change in the future.
+Deno GKM doesn't depends on Java anymore but it still requires the executable binary **Rusty GKM** which is a rust native plugin for listening (and emitting in the future) system events.
 
-It installs the binaries in the `%APPDATA%/gkm` folder, you will find `gkm.jar`, which source you can find at https://github.com/tomzx/gkm-java.
-You will also find `JNativeHook.jar`, which source you can find at https://github.com/kwhat/jnativehook.
+It automatically installs the binary in the `%APPDATA%/gkm` | `%HOME%/gmk` folder, you will find `gkm.exe`, which source you can find at https://github.com/denyncrawford/rusty-gkm.
 
 ## Getting started
 
@@ -51,7 +52,31 @@ for await (const line of wildcard('mouse.*')) {
 ...const line of wildcard('key.*')...
 ```
 
-## Building binaries
+## Accessing event names, data values and literals
+
+Since the event names are designed to be level accessible (trough wildcards), they follow the `[device].[event_action]?.[action_complement]`. 
+
+**Available event names**:
+
+```bash
+mouse.move
+mouse.wheel
+mouse.button.press
+mouse.button.release
+key.press
+key.release
+```
+
+**Available data value formats**:
+
+- Mouse Move and Wheel: Data object with coordinates or deltas.
+- Mouse Button and keys: Key or button string.
+
+**Literals**:
+
+Literals are values of key press or wheel modifications, so you can detect character case state or keybinding codes. If the event doesn't haver or support literals it will be `None`.
+
+## Building the binary
 
 **Install bundler**:
 
@@ -62,7 +87,7 @@ deno install -f --allow-read --allow-write -n bundler https://raw.githubusercont
 **Run the bundler**:
 
 ```bash
-bundler ts-bundle lib jars.b.ts
+bundler ts-bundle lib gkm.b.ts
 ```
 
 ## License

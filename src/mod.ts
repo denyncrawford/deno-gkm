@@ -1,5 +1,5 @@
 import { join, readLines } from '../deps.ts'
-import { writeBinaries, wildTest } from './helpers.ts'
+import { writeBinaries, wildTest, format } from './helpers.ts'
 // TODO: Verify if we're getting loaded from multiples location and prevent creating new child processes?
 
 const name = 'gkm';
@@ -8,21 +8,16 @@ const folder = Deno.build.os === 'windows'
   ? join(Deno.env.get('APPDATA') || Deno.cwd(), name)
   : join(Deno.env.get('HOME') || Deno.cwd(), '.' + name);
 
-const binFolder = folder + '/bin';
-
-await writeBinaries(binFolder);
+await writeBinaries(folder);
 
 export const gkm = async function* () {
 	const reader = Deno.run({ 
-		cmd: [ "java", "-jar", join(binFolder, 'gkm.jar') ],
-		stdout: 'piped',
-		stderr: 'piped',
-		stdin: 'piped'
+		cmd: [ join(folder, 'gkm.exe') ],
+		stdout: 'piped'
 	});
 
 	for await (const line of readLines(reader.stdout)) {
-		const parts = line.split(':');
-		yield { event: parts[0], data:parts[1]}
+		yield format(line)
 	}
 }
 
